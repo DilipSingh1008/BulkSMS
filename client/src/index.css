@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* ===== Theme Colors ===== */
+
+:root {
+  --primary-blue: #0ea5e9;
+  --secondary-green: #10b981;
+  --light-blue: #f0f9ff;
+  --light-green: #ecfdf5;
+}
+
+/* ===== Base Styles ===== */
+
+@layer base {
+  body {
+    background: linear-gradient(135deg, var(--light-blue), var(--light-green));
+    font-family: system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: var(--primary-blue);
+    font-weight: 700;
+  }
+}
+
+/* ===== Reusable Components ===== */
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg text-white font-semibold transition;
+    background-color: var(--primary-blue);
+  }
+
+  .btn-primary:hover {
+    background-color: #0284c7;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg text-white font-semibold transition;
+    background-color: var(--secondary-green);
+  }
+
+  .btn-secondary:hover {
+    background-color: #059669;
+  }
+
+  .section {
+    @apply py-16 px-6;
+  }
+
+  .container-custom {
+    @apply max-w-6xl mx-auto;
+  }
+
+  .card {
+    @apply bg-white p-6 rounded-xl shadow-md;
+  }
+}
