@@ -1,100 +1,230 @@
-import { Zap, ArrowRight, CheckCircle2, BarChart3 } from "lucide-react";
-const Hero = () => (
-  <section id="home" className="relative pt-32 pb-20 px-6 overflow-hidden">
-    <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-30">
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-sky-200 rounded-full blur-[100px]"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-100 rounded-full blur-[100px]"></div>
-    </div>
+import React, { useState } from "react";
+import {
+  Zap,
+  CheckCircle2,
+  X,
+  ArrowRight,
+  MousePointerClick,
+} from "lucide-react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-    <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-      <div className="space-y-8 animate-in fade-in slide-in-from-left duration-1000">
-        <div className="inline-flex items-center space-x-2 bg-sky-50 border border-sky-100 px-4 py-2 rounded-full text-sky-600 font-semibold text-sm">
-          <Zap size={16} />
-          <span>99.9% Delivery Success Rate</span>
-        </div>
-        <h2 className="text-5xl md:text-7xl font-extrabold text-slate-900 leading-tight">
-          Reach Millions in <span className="text-sky-500">Seconds.</span>
-        </h2>
-        <p className="text-xl text-slate-600 max-w-lg leading-relaxed">
-          The most reliable bulk SMS gateway for your business. Fast delivery,
-          high conversion, and real-time analytics.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button className="bg-sky-500 hover:bg-sky-600 shadow-lg shadow-sky-200 text-white px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 group">
-            Start Free Trial{" "}
-            <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-          </button>
-          <button className="bg-white border-2 border-slate-100 hover:border-sky-200 text-slate-700 px-8 py-4 rounded-2xl font-bold text-lg shadow-sm">
-            Watch Demo
-          </button>
-        </div>
-        <div className="flex items-center space-x-4 pt-4">
-          <div className="flex -space-x-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="w-10 h-10 rounded-full border-2 border-white bg-slate-200 overflow-hidden"
-              >
-                <img
-                  src={`https://i.pravatar.cc/100?img=${i + 10}`}
-                  alt="user"
-                />
-              </div>
-            ))}
+export default function Hero() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const enquirySchema = Yup.object({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    mobile: Yup.string()
+      .matches(/^[0-9]{10}$/, "Mobile must be 10 digits")
+      .required("Mobile number required"),
+    message: Yup.string().required("Message is required"),
+  });
+
+  return (
+    <section id="home" className="pt-20 lg:pt-24 pb-12 px-6 bg-[#f8fafc]">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
+        {/* --- Left Side --- */}
+        <div className="space-y-5">
+          <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
+            <Zap size={12} className="text-blue-600 fill-blue-600" />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700">
+              India's #1 Marketing Automation
+            </span>
           </div>
-          <p className="text-sm text-slate-500 font-medium">
-            Joined by 10,000+ businesses worldwide
+
+          <h1 className="text-2xl md:text-5xl font-black text-slate-900 leading-tight tracking-tight">
+            Grow Your Business <br />
+            <span className="text-blue-600">Faster </span>
+            <span className="text-emerald-500">& Smarter</span>
+          </h1>
+
+          <p className="text-sm md:text-base text-slate-600 font-medium leading-relaxed max-w-lg">
+            Send high-converting WhatsApp, Email, and SMS campaigns from one
+            powerful dashboard. Trusted by 500+ growing brands.
           </p>
-        </div>
-      </div>
-      <div className="relative animate-in fade-in zoom-in duration-1000">
-        <div className="bg-white p-8 rounded-[2rem] shadow-2xl shadow-sky-100 border border-slate-50">
-          <div className="flex justify-between items-center mb-6">
-            <div className="h-2 w-16 bg-slate-100 rounded"></div>
-            <div className="h-8 w-8 bg-emerald-500 rounded-full flex items-center justify-center text-white">
-              <CheckCircle2 size={18} />
-            </div>
-          </div>
-          <div className="space-y-4">
-            <div className="bg-sky-50 p-4 rounded-2xl rounded-tl-none mr-12">
-              <p className="text-sm text-slate-700">
-                Your OTP for login is 4592. Valid for 5 minutes.
-              </p>
-            </div>
-            <div className="bg-slate-50 p-4 rounded-2xl rounded-tr-none ml-12 border border-slate-100">
-              <p className="text-sm text-slate-700">
-                Thank you! Logged in successfully.
-              </p>
-            </div>
-            <div className="bg-sky-50 p-4 rounded-2xl rounded-tl-none mr-12">
-              <p className="text-sm text-slate-700">
-                Flash Sale! Use code SAVE20 for 20% off all orders today only!
-                🚀
-              </p>
-            </div>
-          </div>
-          <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
-            <div className="text-center">
-              <p className="text-xs text-slate-400">Sent</p>
-              <p className="text-xl font-bold text-sky-500">1.2M+</p>
-            </div>
-            <div className="text-center">
-              <p className="text-xs text-slate-400">Delivered</p>
-              <p className="text-xl font-bold text-emerald-500">99.8%</p>
-            </div>
-            <div className="text-center">
-              <p className="text-xs text-slate-400">CTR</p>
-              <p className="text-xl font-bold text-amber-500">24.5%</p>
-            </div>
-          </div>
-        </div>
-        {/* Floating elements */}
-        <div className="absolute -top-6 -right-6 bg-emerald-500 text-white p-4 rounded-2xl shadow-lg animate-bounce hidden sm:block">
-          <BarChart3 size={24} />
-        </div>
-      </div>
-    </div>
-  </section>
-);
 
-export default Hero;
+          <div className="flex items-center gap-3 pt-2">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-200 transition-all active:scale-95 flex items-center gap-2"
+            >
+              Get Free Demo <ArrowRight size={16} />
+            </button>
+
+            <a
+              href="#pricing"
+              className="text-slate-700 hover:text-blue-600 px-6 py-3 font-bold text-sm transition-colors border border-slate-200 rounded-xl bg-white"
+            >
+              View Plans
+            </a>
+          </div>
+
+          <div className="flex items-center gap-4 pt-4 border-t border-slate-200 mt-6">
+            <div className="flex items-center gap-1.5">
+              <CheckCircle2 size={14} className="text-emerald-500" />
+              <span className="text-xs font-bold text-slate-500 font-sans">
+                No Credit Card Required
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <CheckCircle2 size={14} className="text-emerald-500" />
+              <span className="text-xs font-bold text-slate-500 font-sans">
+                Set up in 2 Mins
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* --- Right Image --- */}
+        <div className="relative">
+          <div className="rounded-2xl overflow-hidden border-[6px] border-white shadow-xl">
+            <img
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+              alt="Platform Dashboard"
+              className="w-full object-cover"
+            />
+          </div>
+
+          <div className="absolute -bottom-4 -left-4 bg-white p-3 rounded-xl shadow-lg border border-slate-100 flex items-center gap-3">
+            <div className="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center">
+              <MousePointerClick size={18} />
+            </div>
+            <div>
+              <p className="text-[9px] font-bold text-slate-400 uppercase leading-none mb-1">
+                Success Rate
+              </p>
+              <p className="text-sm font-black text-slate-900 leading-none">
+                99.9% Delivered
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* --- Modal --- */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-[2px] flex items-center justify-center z-[100] p-4">
+          <div className="bg-white rounded-2xl w-full max-w-sm relative shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div className="p-6 border-b border-slate-50">
+              <button
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+                onClick={() => setIsModalOpen(false)}
+              >
+                <X size={18} />
+              </button>
+
+              <h3 className="text-lg font-bold text-slate-900">Request Demo</h3>
+              <p className="text-xs text-slate-500">
+                Fill details and our expert will call you.
+              </p>
+            </div>
+
+            <Formik
+              initialValues={{
+                name: "",
+                email: "",
+                mobile: "",
+                message: "",
+              }}
+              validationSchema={enquirySchema}
+              onSubmit={async (values, { resetForm, setSubmitting }) => {
+                try {
+                  const res = await fetch("http://localhost:5000/api/enquiry", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(values),
+                  });
+
+                  const data = await res.json();
+                  console.log(data);
+
+                  alert("Request Submitted Successfully");
+
+                  resetForm();
+                  setIsModalOpen(false);
+                } catch (err) {
+                  console.error(err);
+                  alert("Something went wrong");
+                }
+
+                setSubmitting(false);
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form className="p-6 space-y-4">
+                  <div className="space-y-3">
+                    <div>
+                      <Field
+                        name="name"
+                        placeholder="Name"
+                        className="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-lg text-sm outline-none focus:border-blue-500 transition-all"
+                      />
+                      <ErrorMessage
+                        name="name"
+                        component="p"
+                        className="text-red-500 text-xs mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Field
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        className="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-lg text-sm outline-none focus:border-blue-500 transition-all"
+                      />
+                      <ErrorMessage
+                        name="email"
+                        component="p"
+                        className="text-red-500 text-xs mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Field
+                        name="mobile"
+                        placeholder="Mobile Number"
+                        className="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-lg text-sm outline-none focus:border-blue-500 transition-all"
+                      />
+                      <ErrorMessage
+                        name="mobile"
+                        component="p"
+                        className="text-red-500 text-xs mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Field
+                        as="textarea"
+                        name="message"
+                        placeholder="Message"
+                        rows="3"
+                        className="w-full bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-lg text-sm outline-none focus:border-blue-500 transition-all resize-none"
+                      />
+                      <ErrorMessage
+                        name="message"
+                        component="p"
+                        className="text-red-500 text-xs mt-1"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-sm hover:bg-blue-700 transition-all active:scale-95 shadow-md shadow-blue-100"
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit Request"}
+                  </button>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}

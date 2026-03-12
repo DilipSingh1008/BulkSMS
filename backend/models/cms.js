@@ -1,0 +1,54 @@
+const mongoose = require("mongoose");
+
+const cmsSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    meta: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    metaDescription: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    shortDescription: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+
+    status: {
+      type: Boolean,
+      default: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    images: [
+      {
+        type: String,
+      },
+    ],
+  },
+  { timestamps: true },
+);
+
+module.exports = mongoose.model("CMS", cmsSchema);

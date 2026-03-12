@@ -1,65 +1,133 @@
-import { MessageCircle, MessageSquare, Mail } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Loader2,
+  AlertTriangle,
+  ExternalLink,
+  ShieldCheck,
+} from "lucide-react";
 
-const Services = () => {
-  const services = [
-    {
-      title: "Bulk SMS",
-      icon: <MessageCircle className="text-sky-500" size={24} />,
-      desc: "Send high-priority SMS campaigns to thousands of customers instantly.",
-    },
-    {
-      title: "Bulk WhatsApp",
-      icon: <MessageSquare className="text-emerald-500" size={24} />,
-      desc: "Reach your audience on WhatsApp with automated messages and promotions.",
-    },
-    {
-      title: "Bulk Email",
-      icon: <Mail className="text-purple-500" size={24} />,
-      desc: "Run email marketing campaigns with personalized messages and analytics.",
-    },
-  ];
+export default function Services() {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("http://localhost:5000/api/services");
+        const data = await res.json();
+        // Keeping your original data mapping logic
+        setServices(Array.isArray(data.data) ? data.data : []);
+        setLoading(false);
+      } catch (err) {
+        setError("Unable to load services. Please try again later.");
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  if (loading)
+    return (
+      <div className="py-24 flex flex-col items-center justify-center">
+        <Loader2 className="animate-spin text-blue-600 mb-4" size={40} />
+        <span className="text-slate-400 font-bold text-xs uppercase tracking-widest">
+          Fetching Solutions
+        </span>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="py-20 text-center text-red-500 flex flex-col items-center justify-center gap-3 font-bold">
+        <AlertTriangle size={32} />
+        {error}
+      </div>
+    );
 
   return (
-    <section id="services" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 text-center mb-16">
-        <h3 className="text-emerald-500 font-bold tracking-widest uppercase mb-4">
-          Our Services
-        </h3>
-
-        <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
-          Powerful Messaging Tools
-        </h2>
-
-        <p className="text-slate-500 text-lg max-w-2xl mx-auto">
-          Connect with your audience via SMS, WhatsApp, and Email campaigns
-          efficiently.
-        </p>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {services.map((s, i) => (
-          <div
-            key={i}
-            className="group p-8 rounded-3xl bg-slate-50 border border-slate-100
-            hover:bg-white hover:shadow-xl hover:shadow-sky-100
-            transition-all duration-300"
-          >
-            <div
-              className="w-14 h-14 rounded-2xl bg-white shadow-sm
-              flex items-center justify-center mb-6
-              group-hover:scale-110 transition-transform"
-            >
-              {s.icon}
-            </div>
-
-            <h4 className="text-xl font-bold text-slate-900 mb-3">{s.title}</h4>
-
-            <p className="text-slate-500 leading-relaxed">{s.desc}</p>
+    <section id="services" className="py-16 bg-[#fcfdfe] px-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Compact Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full mb-4">
+            <ShieldCheck size={14} className="text-blue-600" />
+            <span className="text-[10px] font-black uppercase text-blue-700 tracking-wider">
+              Expert Services
+            </span>
           </div>
-        ))}
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900">
+            Our <span className="text-blue-600 font-black">Professional</span>{" "}
+            <span className="text-emerald-500">Services</span>
+          </h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-blue-600 to-emerald-500 mx-auto mt-4 rounded-full"></div>
+        </div>
+
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.map((s) => (
+            <div
+              key={s._id}
+              className="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover:border-blue-500/50 transition-all duration-300 hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.1)] flex flex-col"
+            >
+              {/* Original Gallery Image Logic */}
+              {s.galleryImages && s.galleryImages.length > 0 ? (
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={`http://localhost:5000/${s.galleryImages[0].replace("\\", "/")}`}
+                    alt={s.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span
+                      className={`px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-tight text-white shadow-lg ${
+                        s.status ? "bg-emerald-500" : "bg-red-500"
+                      }`}
+                    >
+                      {s.status ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-48 bg-slate-100 flex items-center justify-center text-slate-400 font-bold italic">
+                  Preview Unavailable
+                </div>
+              )}
+
+              {/* Service Details */}
+              <div className="p-6 flex flex-col flex-grow">
+                {/* Category Tags (Optional but good for context) */}
+                <p className="text-[10px] font-black text-blue-600 uppercase mb-2 tracking-widest">
+                  {s.category?.name || "General Service"}
+                </p>
+
+                <h4 className="text-lg font-black text-slate-900 group-hover:text-blue-600 transition-colors mb-3">
+                  {s.name}
+                </h4>
+
+                {/* Original Description Logic (Dangerously Set HTML) */}
+                {s.description && (
+                  <div
+                    className="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3 font-medium opacity-80 group-hover:opacity-100 transition-opacity"
+                    dangerouslySetInnerHTML={{ __html: s.description }}
+                  />
+                )}
+
+                {/* Bottom Action Area */}
+                {/* <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-slate-400 uppercase">
+                    ID: {s._id.substring(s._id.length - 6)}
+                  </span>
+                  <button className="flex items-center gap-2 text-xs font-black text-blue-600 hover:text-emerald-600 transition-colors uppercase tracking-wider">
+                    Learn More <ExternalLink size={14} />
+                  </button>
+                </div> */}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
-};
-
-export default Services;
+}

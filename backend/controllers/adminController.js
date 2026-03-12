@@ -1,0 +1,415 @@
+const Admin = require("../models/admin.js");
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const Role = require("../models/Role");
+
+const mergePermissions = (rolePermissions = [], userPermissions = []) => {
+  const map = new Map();
+
+  rolePermissions.forEach((p) => {
+    const key = p.module?._id?.toString() || p.module?.toString();
+    if (!key) return;
+    map.set(key, {
+      module: p.module,
+      all: !!p.all,
+      view: !!p.view,
+      add: !!p.add,
+      edit: !!p.edit,
+      delete: !!p.delete,
+    });
+  });
+
+  userPermissions.forEach((p) => {
+    const key = p.module?._id?.toString() || p.module?.toString();
+    if (!key) return;
+    const prev = map.get(key) || {
+      module: p.module,
+      all: false,
+      view: false,
+      add: false,
+      edit: false,
+      delete: false,
+    };
+
+    map.set(key, {
+      module: p.module || prev.module,
+      all: prev.all || !!p.all,
+      view: prev.view || !!p.view,
+      add: prev.add || !!p.add,
+      edit: prev.edit || !!p.edit,
+      delete: prev.delete || !!p.delete,
+    });
+  });
+
+  return Array.from(map.values());
+};
+// ⭐ get profile
+exports.getProfile = async (req, res) => {
+  try {
+    let profile;
+
+    if (req.user.role === "admin" || req.user.role === "super-admin") {
+      profile = await Admin.findById(req.user.id).select("-password");
+    } else {
+      profile = await User.findById(req.user.id)
+        .select("-password")
+        .populate("role");
+    }
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: profile,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ⭐ update profile
+// exports.updateProfile = async (req, res) => {
+//   try {
+//     const { fullName, phone } = req.body;
+
+//     let updateData = { fullName, phone };
+
+//     if (req.file) {
+//       updateData.photo = req.file.path;
+//     }
+
+//     const admin = await Admin.findByIdAndUpdate(req.user.id, updateData, {
+//       new: true,
+//     }).select("-password");
+
+//     res.status(200).json(admin);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { fullName, phone } = req.body;
+
+    let updateData = { fullName, phone };
+
+    if (req.file) {
+      updateData.photo = req.file.path;
+    }
+
+    let updatedProfile;
+
+    if (req.user.role === "admin" || req.user.role === "super-admin") {
+      updatedProfile = await Admin.findByIdAndUpdate(req.user.id, updateData, {
+        new: true,
+      }).select("-password");
+    } else {
+      updatedProfile = await User.findByIdAndUpdate(req.user.id, updateData, {
+        new: true,
+      }).select("-password");
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedProfile,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// ⭐ change password
+// exports.changePassword = async (req, res) => {
+//   try {
+//     const { newPassword } = req.body;
+
+//     const admin = await Admin.findById(req.user.id);
+
+//     // const isMatch = await admin.comparePassword(currentPassword);
+
+//     // if (!isMatch)
+//     //   return res.status(400).json({ message: "Current password incorrect" });
+
+//     admin.password = newPassword;
+//     await admin.save();
+
+//     res.status(200).json({ message: "Password updated" });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { newPassword } = req.body;
+
+    let account;
+
+    if (req.user.role === "admin" || req.user.role === "super-admin") {
+      account = await Admin.findById(req.user.id);
+    } else {
+      account = await User.findById(req.user.id);
+    }
+
+    account.password = newPassword;
+    await account.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated",
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+exports.register = async (req, res) => {
+  try {
+    const { fullName, email, password, phone } = req.body;
+
+    // ⭐ check existing
+    const existingAdmin = await Admin.findOne({
+      email: email.toLowerCase(),
+    });
+
+    if (existingAdmin)
+      return res.status(400).json({ message: "Admin already exists" });
+
+    // ⭐ create admin
+    const admin = await Admin.create({
+      fullName,
+      email: email.toLowerCase(),
+      password,
+      phone,
+      role: "Admin",
+    });
+
+    res.status(201).json({
+      message: "Admin created successfully",
+      admin: {
+        id: admin._id,
+        fullName: admin.fullName,
+        email: admin.email,
+        role: admin.role,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+// Login
+
+// exports.login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     // console.log(email);
+//     // console.log(password);
+
+//     // ⭐ find admin
+//     // const admin = await Admin.findOne({
+//     //   email: email.toLowerCase(),
+//     // });
+//     let account = await Admin.findOne({ email: email.toLowerCase() });
+
+//     let roleType = "admin";
+
+//     // if (!admin) return res.status(400).json({ message: "Admin not found" });
+
+//     if (!account) {
+//       account = await User.findOne({
+//         email: email.toLowerCase(),
+//         role: "sub-admin",
+//       });
+//       roleType = "sub-admin";
+//     }
+
+//     if (!account) {
+//       return res.status(400).json({ message: "Account not found" });
+//     }
+
+//     // ⭐ compare password (model method)
+//     let isMatch = false;
+
+//     if (roleType === "admin") {
+//       isMatch = await account.comparePassword(password);
+//     } else if (roleType === "sub-admin") {
+//       isMatch = await bcrypt.compare(password, account.password);
+//     }
+
+//     if (!isMatch) {
+//       return res.status(400).json({ message: "Invalid password" });
+//     }
+
+//     // ⭐ create token
+//     // const token = jwt.sign(
+//     //   {
+//     //     id: admin._id,
+//     //     role: admin.role,
+//     //   },
+//     //   process.env.JWT_SECRET,
+//     //   { expiresIn: "1d" },
+//     // );
+//     const token = jwt.sign(
+//       {
+//         id: account._id,
+//         role: roleType,
+//       },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "1d" },
+//     );
+
+//     console.log("LOGIN SECRET:", process.env.JWT_SECRET);
+
+//     console.log("LOGIN SECRET:", process.env.JWT_SECRET);
+
+//     // res.json({
+//     //   token,
+//     //   admin: {
+//     //     id: admin._id,
+//     //     fullName: admin.fullName,
+//     //     email: admin.email,
+//     //     role: admin.role,
+//     //   },
+//     // });
+//     res.json({
+//       token,
+//       user: {
+//         id: account._id,
+//         fullName: account.fullName || account.name,
+//         email: account.email,
+//         role: roleType,
+//       },
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    let account = await Admin.findOne({ email: email.toLowerCase() });
+    console.log(account);
+    let roleType = "admin";
+    let roleId = null;
+    console.log(account);
+    if (!account) {
+      account = await User.findOne({
+        email: email.toLowerCase(),
+        status: true,
+      }).populate("role");
+
+      console.log("account", account);
+
+      roleType = account ? account.role.name : null;
+      roleId = account ? account.role._id : null;
+    } else {
+      roleId = account.role; // admin me role direct ho sakta
+    }
+
+    if (!account) {
+      return res.status(400).json({ message: "Account not found" });
+    }
+
+    // ⭐ password check
+    const isMatch = account.comparePassword
+      ? await account.comparePassword(password)
+      : await bcrypt.compare(password, account.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    // ⭐ last login
+    await account.updateOne({
+      lastLogin: new Date(),
+    });
+
+    const allowedRoles = ["sub-admin", "admin", "super-admin", "user"];
+    if (!allowedRoles.includes(roleType)) {
+      return res.status(403).json({ message: "Access denied for your role" });
+    }
+
+    // ⭐ JWT with roleId
+    const token = jwt.sign(
+      {
+        id: account._id,
+        roleId: roleId, // ⭐ MOST IMPORTANT
+        role: roleType,
+        fullName: account.fullName || account.name,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" },
+    );
+
+    res.json({
+      token,
+      user: {
+        id: account._id,
+        fullName: account.fullName || account.name,
+        email: account.email,
+        role: roleType,
+        roleId, // ⭐ frontend ke liye
+        image: account.image || "",
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.getMyPermissions = async (req, res) => {
+  try {
+    if (req.user.role === "admin") {
+      return res.json({ name: "admin", permissions: [] });
+    }
+
+    const user = await User.findById(req.user.id)
+      .populate({
+        path: "role",
+        select: "name permissions",
+        populate: { path: "permissions.module", select: "name label" },
+      })
+      .populate("permissions.module", "name label");
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const effectivePermissions = mergePermissions(
+      user.role?.permissions || [],
+      user.permissions || [],
+    );
+
+    res.json({
+      name: user.role?.name || req.user.role,
+      permissions: effectivePermissions,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+exports.logout = async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Logout failed",
+    });
+  }
+};

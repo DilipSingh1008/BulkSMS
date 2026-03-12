@@ -12,10 +12,10 @@ const Home = () => {
     <>
       <Hero />
       <Services />
-      <BulkSmsForm />
+      {/* <BulkSmsForm /> */}
       <Pricing />
       <About />
-      <Contact />
+      {/* <Contact /> */}
     </>
   );
 };
