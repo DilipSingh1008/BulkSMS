@@ -25,13 +25,26 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Column 1: Brand & Desc */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <div className="bg-blue-600 p-1.5 rounded-lg shadow-lg shadow-blue-500/20">
                 <Send size={18} className="text-white" />
               </div>
               <span className="text-white font-black text-xl tracking-tighter">
-                Bulk<span className="text-emerald-500">Pro</span>
+                Swift<span className="text-emerald-500">Zap</span>
               </span>
+            </div> */}
+            <div className="flex items-center gap-1 cursor-pointer group">
+              {/* Image Container - Icon ko image se replace kiya */}
+              <div className="relative w-25 h-16 flex items-center justify-center">
+                {/* Subtle Glow Effect - optional but makes it pop */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/30 to-emerald-500/20 rounded-full blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+
+                <img
+                  src="/logo.jpg"
+                  alt="SwiftZap"
+                  className="relative w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
             </div>
             <p className="text-sm leading-relaxed font-medium">
               Transforming business communication with high-speed SMS, WhatsApp
@@ -113,7 +126,7 @@ export default function Footer() {
         {/* --- Bottom Section: Copyright --- */}
         <div className="pt-8 border-t border-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
-            © 2026 BulkPro Technologies.{" "}
+            © 2026 SwiftZap Technologies.{" "}
             <span className="text-slate-700 mx-1">|</span> Made with Passion
           </p>
           <div className="flex gap-6">

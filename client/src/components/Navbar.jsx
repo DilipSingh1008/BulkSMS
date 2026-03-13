@@ -15,7 +15,7 @@ export default function Navbar() {
 
   // Scroll spy logic
   useEffect(() => {
-    const sections = ["home", "about", "services", "pricing", "contact"];
+    const sections = ["home", "about", "services", "pricing"];
     const handleScroll = () => {
       const scrollPos = window.scrollY + 120;
       for (let id of sections) {
@@ -29,7 +29,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const links = ["Home", "About", "Services", "Pricing", "Contact"];
+  const links = ["Home", "About", "Services", "Pricing"];
 
   return (
     <nav
@@ -40,23 +40,17 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        {/* --- LOGO: Blue to Green Gradient --- */}
-        <div className="flex items-center space-x-2 cursor-pointer group">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-emerald-500 rounded-lg blur opacity-25 group-hover:opacity-60 transition duration-300"></div>
-            <div className="relative bg-gradient-to-br from-blue-600 to-emerald-500 p-2 rounded-lg shadow-lg">
-              <Send
-                size={18}
-                className="text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+        <div className="flex items-center space-x-3 cursor-pointer group">
+          <div className="relative group cursor-pointer inline-block">
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-[#2141C8] to-[#60C932] rounded-2xl blur-md opacity-20 group-hover:opacity-60 transition duration-500"></div>
+            <div className="relative h-12 w-20 bg-white rounded-2xl shadow-lg border border-slate-100 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:shadow-blue-500/10">
+              <img
+                src="/logo.jpg"
+                alt="SwiftZap Icon"
+                className="w-20 h-12 object-contain transform group-hover:scale-110 transition-transform duration-500 ease-out"
               />
             </div>
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-slate-900">
-            Bulk
-            <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
-              Pro
-            </span>
-          </h1>
         </div>
 
         {/* --- DESKTOP NAVIGATION --- */}

@@ -40,8 +40,11 @@ export default function About() {
                 Who We Are
               </span>
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">
-                About <span className="text-blue-600">BulkPro</span>{" "}
-                <span className="text-emerald-500">Solutions</span>
+                About <span className="text-blue-600">Swift</span>{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60C932] to-[#2141C8]">
+                  Zap
+                </span>
+                {/* <span className="text-emerald-500">Solutions</span> */}
               </h2>
               <div className="h-1 w-16 bg-emerald-500 mt-4 rounded-full"></div>
             </div>
