@@ -47,7 +47,7 @@ export default function Navbar() {
               <img
                 src="/logo.jpg"
                 alt="SwiftZap Icon"
-                className="w-20 h-12 object-contain transform group-hover:scale-110 transition-transform duration-500 ease-out"
+                className="w-20 h-12 object-contain transform group-hover:scale-110 transition-transform duration-500 ease-out logo-img"
               />
             </div>
           </div>
