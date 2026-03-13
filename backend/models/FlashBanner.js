@@ -7,6 +7,7 @@ const flashBannerSchema = new mongoose.Schema(
     buttonText: { type: String, required: true },
     photo: { type: String }, // store filename/path
     status: { type: Boolean, default: false }, // default false
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

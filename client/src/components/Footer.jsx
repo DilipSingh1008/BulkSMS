@@ -11,12 +11,12 @@ import {
 
 export default function Footer() {
   const links = ["Home", "Services", "Pricing", "Contact"];
-  const socials = [
-    { icon: <Instagram size={18} />, color: "hover:text-pink-500" },
-    { icon: <Twitter size={18} />, color: "hover:text-sky-400" },
-    { icon: <Linkedin size={18} />, color: "hover:text-blue-600" },
-    { icon: <Github size={18} />, color: "hover:text-white" },
-  ];
+  // const socials = [
+  //   { icon: <Instagram size={18} />, color: "hover:text-pink-500" },
+  //   { icon: <Twitter size={18} />, color: "hover:text-sky-400" },
+  //   { icon: <Linkedin size={18} />, color: "hover:text-blue-600" },
+  //   { icon: <Github size={18} />, color: "hover:text-white" },
+  // ];
 
   return (
     <footer className="bg-[#0f172a] text-slate-400 pt-16 pb-8 px-6 border-t border-slate-800/50">
@@ -94,7 +94,7 @@ export default function Footer() {
             <h4 className="text-white font-black text-sm uppercase tracking-widest mb-6">
               Newsletter
             </h4>
-            <p className="text-[11px] font-bold text-slate-500 uppercase mb-4 leading-tight">
+            <p className="text-[11px]  font-bold text-slate-500 uppercase mb-4 leading-tight">
               Get latest updates directly
             </p>
             <div className="relative group">
@@ -103,7 +103,7 @@ export default function Footer() {
                 placeholder="Your email"
                 className="w-full bg-slate-900/50 border border-slate-800 rounded-xl px-4 py-3 text-xs font-medium outline-none focus:border-blue-500 transition-all placeholder:text-slate-600 text-white"
               />
-              <button className="absolute right-2 top-2 bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg transition-all active:scale-95 shadow-lg shadow-emerald-500/20">
+              <button className="absolute right-2 cursor-pointer top-2 bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg transition-all active:scale-95 shadow-lg shadow-emerald-500/20">
                 <Send size={14} />
               </button>
             </div>

@@ -132,7 +132,7 @@ export default function Pricing() {
 
               <button
                 onClick={() => handleSelectPlan(plan)}
-                className={`w-full py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                className={`w-full py-4 cursor-pointer rounded-2xl font-black text-sm uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${
                   plan.popular
                     ? "bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-100"
                     : "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-100"
@@ -152,7 +152,7 @@ export default function Pricing() {
             {/* Header */}
             <div className="p-6 border-b border-slate-50 relative">
               <button
-                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+                className="absolute cursor-pointer top-4 right-4 text-slate-400 hover:text-slate-600"
                 onClick={() => setIsModalOpen(false)}
               >
                 <X size={18} />
@@ -258,7 +258,7 @@ export default function Pricing() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-sm hover:bg-blue-700 transition-all active:scale-95 shadow-md shadow-blue-100"
+                    className="w-full cursor-pointer bg-blue-600 text-white py-3 rounded-lg font-bold text-sm hover:bg-blue-700 transition-all active:scale-95 shadow-md shadow-blue-100"
                   >
                     {isSubmitting ? "Submitting..." : "Submit Request"}
                   </button>

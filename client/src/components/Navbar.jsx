@@ -78,7 +78,7 @@ export default function Navbar() {
 
         {/* --- ACTION BUTTON --- */}
         <div className="hidden md:block">
-          <button className="flex items-center gap-2 bg-slate-900 hover:bg-blue-600 text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-lg hover:shadow-blue-200 active:scale-95">
+          <button className="flex cursor-pointer items-center gap-2 bg-slate-900 hover:bg-blue-600 text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-lg hover:shadow-blue-200 active:scale-95">
             Get Started
             <ArrowRight size={14} />
           </button>
@@ -116,7 +116,7 @@ export default function Navbar() {
               {item}
             </a>
           ))}
-          <button className="w-full bg-gradient-to-r from-blue-600 to-emerald-500 text-white py-4 rounded-2xl font-bold shadow-xl">
+          <button className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-emerald-500 text-white py-4 rounded-2xl font-bold shadow-xl">
             Get Started
           </button>
         </div>

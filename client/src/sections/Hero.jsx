@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import BannerModal from "../components/BannerModal";
 
 export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,7 +48,7 @@ export default function Hero() {
           <div className="flex items-center gap-3 pt-2">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-200 transition-all active:scale-95 flex items-center gap-2"
+              className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-200 transition-all active:scale-95 flex items-center gap-2"
             >
               Get Free Demo <ArrowRight size={16} />
             </button>
@@ -75,7 +76,7 @@ export default function Hero() {
             </div>
           </div>
         </div>
-
+        <BannerModal />
         {/* --- Right Image --- */}
         <div className="relative">
           <div className="rounded-2xl overflow-hidden border-[6px] border-white shadow-xl">
@@ -108,7 +109,7 @@ export default function Hero() {
           <div className="bg-white rounded-2xl w-full max-w-sm relative shadow-2xl animate-in fade-in zoom-in duration-200">
             <div className="p-6 border-b border-slate-50">
               <button
-                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+                className="absolute cursor-pointer top-4 right-4 text-slate-400 hover:text-slate-600"
                 onClick={() => setIsModalOpen(false)}
               >
                 <X size={18} />
@@ -215,7 +216,7 @@ export default function Hero() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-sm hover:bg-blue-700 transition-all active:scale-95 shadow-md shadow-blue-100"
+                    className="w-full bg-blue-600 cursor-pointer text-white py-3 rounded-lg font-bold text-sm hover:bg-blue-700 transition-all active:scale-95 shadow-md shadow-blue-100"
                   >
                     {isSubmitting ? "Submitting..." : "Submit Request"}
                   </button>

@@ -33,10 +33,11 @@ const ManageFlashBanner = () => {
   const [limit] = useState(5);
   const [sortBy, setSortBy] = useState("createdAt");
   const [order, setOrder] = useState("desc");
-
+  const [errors, setErrors] = useState({});
   const { data, isLoading } = useGetItemsQuery(
     `flash-banner?page=${page}&limit=${limit}&sortBy=${sortBy}&order=${order}&search=${searchQuery}`,
   );
+  console.log(data);
 
   const banners = data?.data || [];
   const totalPages = data?.totalPages || data?.pagination?.totalPages || 1;
@@ -311,13 +312,13 @@ const ManageFlashBanner = () => {
             </h2>
             <button
               onClick={closeModal}
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+              className="absolute cursor-pointer top-3 right-3 text-gray-400 hover:text-gray-600"
             >
               ✕
             </button>
 
             <div className="flex flex-col gap-3">
-              <label className="text-sm font-medium">Photo</label>
+              <label className="text-sm font-medium">Photo *</label>
               <input
                 type="file"
                 accept="image/*"
@@ -329,6 +330,7 @@ const ManageFlashBanner = () => {
                       photoFile: file,
                       photoPreview: URL.createObjectURL(file),
                     });
+                    setErrors((prev) => ({ ...prev, photo: "" }));
                   }
                 }}
                 className={`w-full px-3 py-2 rounded-md border ${
@@ -337,7 +339,7 @@ const ManageFlashBanner = () => {
                     : "bg-white border-gray-300 text-gray-700"
                 }`}
               />
-              {selectedBanner.photoPreview || selectedBanner.photo ? (
+              {(selectedBanner.photoPreview || selectedBanner.photo) && (
                 <img
                   src={
                     selectedBanner.photoPreview ||
@@ -346,9 +348,12 @@ const ManageFlashBanner = () => {
                   alt="Banner Preview"
                   className="w-40 h-20 object-cover rounded-md mt-1"
                 />
-              ) : null}
+              )}
+              {errors.photo && (
+                <span className="text-red-500 text-xs">{errors.photo}</span>
+              )}
 
-              <label className="text-sm font-medium">Title</label>
+              <label className="text-sm font-medium">Title *</label>
               <input
                 type="text"
                 className={`w-full px-3 py-2 rounded-md border ${
@@ -357,13 +362,17 @@ const ManageFlashBanner = () => {
                     : "bg-white border-gray-300 text-gray-700"
                 }`}
                 value={selectedBanner.title}
-                onChange={(e) =>
+                onChange={(e) => {
                   setSelectedBanner({
                     ...selectedBanner,
                     title: e.target.value,
-                  })
-                }
+                  });
+                  setErrors((prev) => ({ ...prev, title: "" }));
+                }}
               />
+              {errors.title && (
+                <span className="text-red-500 text-xs">{errors.title}</span>
+              )}
 
               <label className="text-sm font-medium">URL</label>
               <input
@@ -398,6 +407,17 @@ const ManageFlashBanner = () => {
 
               <button
                 onClick={async () => {
+                  const newErrors = {};
+                  if (!selectedBanner.title.trim())
+                    newErrors.title = "Title is required";
+                  if (!selectedBanner.photo && !selectedBanner.photoFile)
+                    newErrors.photo = "Photo is required";
+
+                  if (Object.keys(newErrors).length > 0) {
+                    setErrors(newErrors);
+                    return;
+                  }
+
                   try {
                     const formData = new FormData();
                     formData.append("title", selectedBanner.title);
@@ -425,7 +445,7 @@ const ManageFlashBanner = () => {
                     console.error("Error saving banner:", err);
                   }
                 }}
-                className="mt-4 px-4 py-2 bg-(--primary) text-white rounded-md hover:opacity-90 transition-all"
+                className="mt-4 cursor-pointer px-4 py-2 bg-(--primary) text-white rounded-md hover:opacity-90 transition-all"
               >
                 {isAddMode ? "Add Banner" : "Save Changes"}
               </button>

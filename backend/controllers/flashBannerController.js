@@ -12,8 +12,12 @@ exports.getBanners = async (req, res) => {
     const sortBy = req.query.sortBy || "createdAt";
     const order = req.query.order === "asc" ? 1 : -1;
 
-    const filter = search ? { title: { $regex: search, $options: "i" } } : {};
+    // const filter = search ? { title: { $regex: search, $options: "i" } } : {};
 
+    const filter = {
+      isDeleted: false,
+      ...(search && { title: { $regex: search, $options: "i" } }),
+    };
     const total = await FlashBanner.countDocuments(filter);
     const banners = await FlashBanner.find(filter)
       .sort({ [sortBy]: order })
@@ -102,7 +106,9 @@ exports.deleteBanner = async (req, res) => {
       fs.unlinkSync(path.join("uploads", banner.photo));
     }
 
-    await banner.deleteOne();
+    banner.isDeleted = true;
+    await banner.save();
+
     res.json({ message: "Banner deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
