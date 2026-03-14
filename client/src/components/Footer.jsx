@@ -35,15 +35,24 @@ export default function Footer() {
             </div> */}
             <div className="flex items-center gap-1 cursor-pointer group">
               {/* Image Container - Icon ko image se replace kiya */}
-              <div className="relative w-25 h-16 flex items-center justify-center">
-                {/* Subtle Glow Effect - optional but makes it pop */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/30 to-emerald-500/20 rounded-full blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+              {/* <div className="relative w-36 h-20 flex items-center justify-center">
+                <div className="absolute -inset-1 "></div>
 
                 <img
-                  src="/logo.jpg"
+                  src="./logorm.png"
                   alt="SwiftZap"
-                  className="relative w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-300"
+                  className="relative w-full h-full object-contain brightness-0 invert group-hover:scale-110 transition-transform duration-300"
                 />
+              </div> */}
+
+              <div className="relative w-36 h-20 flex items-center justify-center group">
+                <div className="relative w-36 h-20 flex items-center justify-center group">
+                  <img
+                    src="./logorm.png"
+                    alt="SwiftZap"
+                    className="w-full h-full object-contain brightness-0 invert transition-transform duration-300 "
+                  />
+                </div>
               </div>
             </div>
             <p className="text-sm leading-relaxed font-medium">
