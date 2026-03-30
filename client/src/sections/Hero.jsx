@@ -10,8 +10,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import BannerModal from "../components/BannerModal";
 
-export default function Hero() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function Hero({ isModalOpen, setIsModalOpen }) {
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const enquirySchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -115,7 +115,7 @@ export default function Hero() {
                 <X size={18} />
               </button>
 
-              <h3 className="text-lg font-bold text-slate-900">Request Demo</h3>
+              <h3 className="text-lg font-bold text-slate-900">Get Start</h3>
               <p className="text-xs text-slate-500">
                 Fill details and our expert will call you.
               </p>

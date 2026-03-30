@@ -41,27 +41,27 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     // conditionally push
     ...(allow
       ? [
-          {
-            path: "/dashboard/managerole",
-            name: "ManageRole",
-            icon: <Shield size={18} />,
-            moduleKey: "managerole",
-          },
-          {
-            path: "/dashboard/manage-modules",
-            name: "Manage Modules",
-            icon: <ListTree size={18} />,
-            moduleKey: "manage-modules",
-          },
+          // {
+          //   path: "/dashboard/managerole",
+          //   name: "ManageRole",
+          //   icon: <Shield size={18} />,
+          //   moduleKey: "managerole",
+          // },
+          // {
+          //   path: "/dashboard/manage-modules",
+          //   name: "Manage Modules",
+          //   icon: <ListTree size={18} />,
+          //   moduleKey: "manage-modules",
+          // },
         ]
       : []),
 
-    {
-      path: "/dashboard/user",
-      name: "Users",
-      icon: <Users size={18} />,
-      moduleKey: "users",
-    },
+    // {
+    //   path: "/dashboard/user",
+    //   name: "Users",
+    //   icon: <Users size={18} />,
+    //   moduleKey: "users",
+    // },
     // {
     //   path: "/dashboard/location",
     //   name: "Location",

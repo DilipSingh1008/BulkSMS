@@ -78,70 +78,81 @@ export default function Pricing() {
 
         {/* --- Grid: Same as Services Section --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {plans.map((plan) => (
-            <div
-              key={plan._id}
-              className={`group relative bg-white rounded-3xl border p-8 transition-all duration-300 flex flex-col hover:shadow-xl hover:-translate-y-1 ${
-                plan.popular
-                  ? "border-emerald-500 shadow-lg"
-                  : "border-slate-200 shadow-sm"
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-8 bg-emerald-500 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 shadow-md">
-                  <Star size={12} fill="currentColor" /> Most Popular
-                </div>
-              )}
-
-              <div className="mb-6">
-                <h4 className="text-xl font-black text-slate-900 mb-2">
-                  {plan.name}
-                </h4>
-                <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                  {plan.desc}
-                </p>
-              </div>
-
-              <div className="mb-8 flex items-baseline gap-2">
-                <span className="text-4xl font-black text-slate-900 tracking-tight">
-                  {plan.price}
-                </span>
-                <span className="text-slate-400 text-sm font-bold uppercase">
-                  / {plan.period}
-                </span>
-              </div>
-
-              <div className="w-full h-px bg-slate-100 mb-8"></div>
-
-              <ul className="space-y-4 mb-10 flex-grow">
-                {plan.features.map((f, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-center gap-3 text-sm font-semibold text-slate-600"
-                  >
-                    <CheckCircle2
-                      size={18}
-                      className={
-                        plan.popular ? "text-emerald-500" : "text-blue-600"
-                      }
-                    />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-
-              <button
-                onClick={() => handleSelectPlan(plan)}
-                className={`w-full py-4 cursor-pointer rounded-2xl font-black text-sm uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${
+          {plans.length === 0 ? (
+            <div className="col-span-full text-center py-16">
+              <p className="text-lg font-semibold text-slate-700 mb-2">
+                No pricing plans available
+              </p>
+              <p className="text-sm text-slate-500">
+                We’re currently updating our plans. Please check back later.
+              </p>
+            </div>
+          ) : (
+            plans.map((plan) => (
+              <div
+                key={plan._id}
+                className={`group relative bg-white rounded-3xl border p-8 transition-all duration-300 flex flex-col hover:shadow-xl hover:-translate-y-1 ${
                   plan.popular
-                    ? "bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-100"
-                    : "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-100"
+                    ? "border-emerald-500 shadow-lg"
+                    : "border-slate-200 shadow-sm"
                 }`}
               >
-                Select Plan <ArrowRight size={16} />
-              </button>
-            </div>
-          ))}
+                {plan.popular && (
+                  <div className="absolute -top-4 left-8 bg-emerald-500 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 shadow-md">
+                    <Star size={12} fill="currentColor" /> Most Popular
+                  </div>
+                )}
+
+                <div className="mb-6">
+                  <h4 className="text-xl font-black text-slate-900 mb-2">
+                    {plan.name}
+                  </h4>
+                  <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                    {plan.desc}
+                  </p>
+                </div>
+
+                <div className="mb-8 flex items-baseline gap-2">
+                  <span className="text-4xl font-black text-slate-900 tracking-tight">
+                    {plan.price}
+                  </span>
+                  <span className="text-slate-400 text-sm font-bold uppercase">
+                    / {plan.period}
+                  </span>
+                </div>
+
+                <div className="w-full h-px bg-slate-100 mb-8"></div>
+
+                <ul className="space-y-4 mb-10 flex-grow">
+                  {plan.features.map((f, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-center gap-3 text-sm font-semibold text-slate-600"
+                    >
+                      <CheckCircle2
+                        size={18}
+                        className={
+                          plan.popular ? "text-emerald-500" : "text-blue-600"
+                        }
+                      />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  onClick={() => handleSelectPlan(plan)}
+                  className={`w-full py-4 cursor-pointer rounded-2xl font-black text-sm uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                    plan.popular
+                      ? "bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-100"
+                      : "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-100"
+                  }`}
+                >
+                  Select Plan <ArrowRight size={16} />
+                </button>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

@@ -10,6 +10,7 @@ export default function BannerModal() {
       try {
         const res = await fetch("http://localhost:5000/api/flash-banner");
         const data = await res.json();
+        console.log(data);
 
         const active = (data.data || []).find(
           (b) => b.status === true && b.isDeleted === false,
