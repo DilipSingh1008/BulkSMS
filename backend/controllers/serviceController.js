@@ -3,6 +3,26 @@ const path = require("path");
 const Service = require("../models/Service.js");
 const Category = require("../models/Category.js");
 
+const Pricing = require("../models/Pricing.js");
+
+exports.getServiceabById = async (req, res) => {
+  try {
+    const service = await Service.findById(req.params.id);
+
+    if (!service) return res.status(404).json({ message: "Service not found" });
+
+    const pricePlans = await Pricing.find({
+      serviceName: service.name,
+      isDeleted: false,
+      status: true,
+    });
+
+    res.status(200).json({ ...service.toObject(), pricePlans });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
 exports.createService = async (req, res) => {
   try {
     const {
@@ -221,7 +241,19 @@ exports.updateService = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+// GET all active services
+exports.getActiveServices = async (req, res) => {
+  try {
+    const services = await Service.find({
+      isDeleted: false,
+      status: true,
+    }).select("name slug");
 
+    res.status(200).json({ data: services });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 // controllers/serviceController.js
 
 exports.toggleServiceStatus = async (req, res) => {

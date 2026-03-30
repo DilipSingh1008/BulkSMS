@@ -117,12 +117,6 @@ const ManagePricing = () => {
                       Price <SortIcon field="price" />
                     </th>
                     <th
-                      className="px-4 py-3 cursor-pointer"
-                      onClick={() => handleSort("period")}
-                    >
-                      Period <SortIcon field="period" />
-                    </th>
-                    <th
                       className="px-4 py-3 hidden md:table-cell cursor-pointer"
                       onClick={() => handleSort("desc")}
                     >
@@ -165,7 +159,6 @@ const ManagePricing = () => {
                           {plan.name}
                         </td>
                         <td className="px-4 py-2.5">{plan.price}</td>
-                        <td className="px-4 py-2.5">{plan.period}</td>
                         <td className="px-4 py-2.5 hidden md:table-cell">
                           {plan.desc}
                         </td>

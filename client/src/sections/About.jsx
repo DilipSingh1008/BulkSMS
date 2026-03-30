@@ -30,7 +30,7 @@ export default function About() {
 
   return (
     <section id="about" className="py-20 bg-white px-6">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto mt-15">
         {/* --- Main Content Grid --- */}
         <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
           {/* Left: Content Area */}

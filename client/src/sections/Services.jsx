@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Loader2, AlertTriangle, ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Services() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -21,10 +23,12 @@ export default function Services() {
     };
     fetchServices();
   }, []);
-
+  const handleServiceClick = (id) => {
+    navigate(`/services/${id}`);
+  };
   return (
-    <section id="services" className="py-16 bg-[#fcfdfe] px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="services" className="py-20 bg-[#fcfdfe] px-6">
+      <div className="max-w-6xl mx-auto mt-15">
         {/* --- YEH HEADER AB HAMESHA DIKHEGA --- */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full mb-4">
@@ -62,7 +66,10 @@ export default function Services() {
               >
                 {/* Image Logic */}
                 {s.galleryImages && s.galleryImages.length > 0 ? (
-                  <div className="relative h-48 overflow-hidden">
+                  <div
+                    className="relative h-48 overflow-hidden"
+                    onClick={() => handleServiceClick(s._id)}
+                  >
                     <img
                       src={`http://localhost:5000/${s.galleryImages[0].replace(/\\/g, "/")}`}
                       alt={s.name}

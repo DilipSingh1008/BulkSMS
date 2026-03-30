@@ -11,10 +11,7 @@ const pricingSchema = new mongoose.Schema(
       type: String,
       required: [true, "Price is required"],
     },
-    period: {
-      type: String,
-      default: "/month",
-    },
+
     desc: {
       type: String,
       required: [true, "Description is required"],
@@ -33,6 +30,10 @@ const pricingSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    serviceName: {
+      type: String,
+      required: false,
     },
   },
   {

@@ -8,6 +8,8 @@ const {
   updateService,
   toggleServiceStatus,
   getActiveCategories,
+  getActiveServices,
+  getServiceabById,
 } = require("../controllers/serviceController");
 const upload = require("../middlewares/upload");
 
@@ -20,8 +22,10 @@ const uploadFields = upload.fields([
 router.post("/", uploadFields, createService);
 router.get("/", getServices);
 router.get("/active", getActiveCategories);
+router.get("/getData", getServiceabById);
 
 router.put("/:id", uploadFields, updateService);
+router.get("/active-services", getActiveServices); // dropdown
 router.delete("/:id", deleteService);
 router.get("/:id", getServiceById);
 router.patch("/togal/:id", toggleServiceStatus);

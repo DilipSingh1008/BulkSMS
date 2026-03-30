@@ -18,10 +18,9 @@ const AddEditPricing = () => {
   const [initialValues, setInitialValues] = useState({
     name: "",
     price: "",
-    period: "/month",
     desc: "",
+    serviceName: "",
     features: [""],
-    status: true,
   });
 
   // RTK Query for fetching single plan (edit)
@@ -32,7 +31,9 @@ const AddEditPricing = () => {
 
   const [createItem] = useCreateItemMutation();
   const [updateItem] = useUpdateItemMutation();
-
+  const { data: serviceRes, isLoading: serviceLoading } = useGetItemsQuery(
+    "services/active-services",
+  );
   // Populate form when editing
   useEffect(() => {
     if (isEdit && planRes?.data) {
@@ -40,10 +41,9 @@ const AddEditPricing = () => {
       setInitialValues({
         name: p.name || "",
         price: p.price || "",
-        period: p.period || "/month",
         desc: p.desc || "",
+        serviceName: p.serviceName || "",
         features: p.features.length ? p.features : [""],
-        status: p.status,
       });
     }
   }, [isEdit, planRes]);
@@ -69,7 +69,6 @@ const AddEditPricing = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Plan Name is required"),
     price: Yup.string().required("Price is required"),
-    period: Yup.string().required("Period is required"),
     desc: Yup.string().required("Description is required"),
     features: Yup.array().of(Yup.string().required("Feature cannot be empty")),
   });
@@ -149,25 +148,28 @@ const AddEditPricing = () => {
                       className={theme.error}
                     />
                   </div>
-
-                  <div>
-                    <label className={theme.label}>
-                      Period <span className="text-red-500">*</span>
-                    </label>
-                    <Field name="period" type="text" className={theme.input} />
-                    <ErrorMessage
-                      name="period"
-                      component="div"
-                      className={theme.error}
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2 mt-6">
-                    <Field name="status" type="checkbox" className="h-4 w-4" />
-                    <span>Active</span>
-                  </div>
                 </div>
+                <div>
+                  <label className={theme.label}>
+                    Select Service <span className="text-red-500">*</span>
+                  </label>
 
+                  <Field as="select" name="serviceName" className={theme.input}>
+                    <option value="">Select Service</option>
+
+                    {serviceRes?.data?.map((s) => (
+                      <option key={s._id} value={s.name}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </Field>
+
+                  <ErrorMessage
+                    name="serviceName"
+                    component="div"
+                    className={theme.error}
+                  />
+                </div>
                 <div className="mt-4">
                   <label className={theme.label}>
                     Description <span className="text-red-500">*</span>

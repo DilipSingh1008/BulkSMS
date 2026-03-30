@@ -3,7 +3,7 @@ const Pricing = require("../models/Pricing.js");
 // Create Plan
 exports.createPricing = async (req, res) => {
   try {
-    const { name, price, period, desc, features, status } = req.body;
+    const { name, price, desc, features, serviceName } = req.body;
 
     if (!name || !price || !desc || !features?.length) {
       return res.status(400).json({ message: "Required fields missing" });
@@ -12,12 +12,11 @@ exports.createPricing = async (req, res) => {
     const pricing = new Pricing({
       name,
       price,
-      period,
       desc,
       features,
-      status: status === "true" || status === true,
+      serviceName,
     });
-
+    console.log(pricing);
     await pricing.save();
     res.status(201).json({ message: "Pricing plan created", data: pricing });
   } catch (err) {
@@ -83,18 +82,16 @@ exports.updatePricing = async (req, res) => {
       return res.status(404).json({ message: "Pricing plan not found" });
     }
 
-    const { name, price, period, desc, features, status } = req.body;
-    if (!name || !price || !desc || !features?.length) {
+    const { name, price, desc, features, serviceName } = req.body;
+    if (!name || !price || !desc || !features?.length || !serviceName) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
     plan.name = name;
     plan.price = price;
-    plan.period = period || plan.period;
     plan.desc = desc;
     plan.features = features;
-    plan.status = status === "true" || status === true;
-
+    plan.serviceName = serviceName;
     await plan.save();
     res.status(200).json({ message: "Pricing plan updated", data: plan });
   } catch (err) {

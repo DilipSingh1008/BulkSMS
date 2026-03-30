@@ -147,12 +147,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       icon: <MessageCircle size={18} />,
       moduleKey: "ManagePricing",
     },
-    {
-      path: "/dashboard/ManageFlashBanner",
-      name: "Flash Banner",
-      icon: <MessageCircle size={18} />,
-      moduleKey: "ManageFlashBanner",
-    },
+    // {
+    //   path: "/dashboard/ManageFlashBanner",
+    //   name: "Flash Banner",
+    //   icon: <MessageCircle size={18} />,
+    //   moduleKey: "ManageFlashBanner",
+    // },
 
     // {
     //   path: "/dashboard/vendor",
