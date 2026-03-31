@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import Service from "../models/Service";
+const mongoose = require("mongoose");
+const Service = require("../models/Service"); // CommonJS require
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/yourdb";
 
@@ -54,7 +54,7 @@ const servicesData = [
   },
 ];
 
-export default async function seedServices() {
+async function seedServices() {
   try {
     await mongoose.connect(MONGO_URI);
 
@@ -74,3 +74,9 @@ export default async function seedServices() {
     console.error("Error seeding services:", err);
   }
 }
+
+if (require.main === module) {
+  seedServices();
+}
+
+module.exports = seedServices;

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import User from "../models/admin";
+const mongoose = require("mongoose");
+const User = require("../models/admin"); // CommonJS require
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/yourdb";
 
@@ -16,9 +16,10 @@ const defaultUser = {
   updatedAt: new Date("2026-03-30T00:00:00.000Z"),
 };
 
-export default async function seedDefaultUser() {
+async function seedDefaultUser() {
   try {
     await mongoose.connect(MONGO_URI);
+
     const existing = await User.findOne({ email: defaultUser.email });
 
     if (existing) {
@@ -34,3 +35,9 @@ export default async function seedDefaultUser() {
     console.error("Error creating default user:", err);
   }
 }
+
+if (require.main === module) {
+  seedDefaultUser();
+}
+
+module.exports = seedDefaultUser;

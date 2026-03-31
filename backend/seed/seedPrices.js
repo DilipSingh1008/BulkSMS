@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import Price from "../models/price";
-import Service from "../models/Pricing";
+const mongoose = require("mongoose");
+const Price = require("../models/Pricing");
+const Service = require("../models/Service");
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/yourdb";
 
@@ -9,7 +9,6 @@ const pricesData = [
     _id: new mongoose.Types.ObjectId("69ca4b3c59372941a2dd6318"),
     name: "Bulk Messaging WhatsApp",
     price: "8499",
-    period: "/month",
     desc: "Designed for growing businesses that need more automation and reach.",
     features: [
       "100,000 WhatsApp SMS per month",
@@ -28,7 +27,6 @@ const pricesData = [
     _id: new mongoose.Types.ObjectId("69ca4baf59372941a2dd632f"),
     name: "Bulk Messaging SMS",
     price: "8499",
-    period: "/month",
     desc: "Complete marketing solution for large businesses.",
     features: [
       "100,000 SMS per month",
@@ -63,16 +61,15 @@ const pricesData = [
   },
 ];
 
-export default async function seedPrices() {
+async function seedPrices() {
   try {
     await mongoose.connect(MONGO_URI);
 
     for (const item of pricesData) {
-      // 🔗 service find karo name se
       const service = await Service.findOne({ name: item.serviceName });
 
       if (!service) {
-        console.log(`❌ Service not found: ${item.serviceName}`);
+        console.log(` Service not found: ${item.serviceName}`);
         continue;
       }
 
@@ -83,13 +80,12 @@ export default async function seedPrices() {
         continue;
       }
 
-      // service reference add karo
       const newPrice = {
         ...item,
         service: service._id,
       };
 
-      delete newPrice.serviceName; // clean data
+      delete newPrice.serviceName;
 
       await Price.create(newPrice);
 
@@ -101,3 +97,5 @@ export default async function seedPrices() {
     console.error("Error seeding prices:", err);
   }
 }
+
+module.exports = seedPrices;
