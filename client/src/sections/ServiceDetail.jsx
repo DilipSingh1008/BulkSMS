@@ -11,6 +11,7 @@ export default function ServiceDetailPricing() {
   const [error, setError] = useState("");
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const enquirySchema = Yup.object({
     name: Yup.string().required("Required"),
@@ -24,7 +25,7 @@ export default function ServiceDetailPricing() {
   useEffect(() => {
     const fetchService = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/getData/${id}`);
+        const res = await fetch(`${API_URL}/services/getData/${id}`);
         console.log(res);
         const data = await res.json();
         setService(data);
@@ -65,12 +66,11 @@ export default function ServiceDetailPricing() {
             </div>
 
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">
-              Pricing Plans for{" "}
-              <span className="text-blue-600">{plans.name}</span>
+              Ready to <span className="text-blue-600">Scale</span> Your{" "}
+              Business <span className="text-emerald-500">Growth?</span>
             </h2>
           </div>
         </div>
-
         {/* Pricing Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {plans.pricePlans?.length === 0 ? (

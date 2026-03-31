@@ -8,7 +8,7 @@ const Pricing = require("../models/Pricing.js");
 exports.getServiceabById = async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);
-
+    console.log(service);
     if (!service) return res.status(404).json({ message: "Service not found" });
 
     const pricePlans = await Pricing.find({
@@ -23,6 +23,8 @@ exports.getServiceabById = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+
 exports.createService = async (req, res) => {
   try {
     const {

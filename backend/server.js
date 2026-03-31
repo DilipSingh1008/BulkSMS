@@ -37,18 +37,21 @@ const flashBannerRoutes = require("./routes/flashBannerRoutes");
 connectDB();
 
 const app = express();
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+    origin: (origin, callback) => {
+      // allow requests with no origin (Postman, curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+      console.log("Blocked CORS for:", origin);
+      return callback(new Error(`CORS blocked: ${origin}`));
     },
-    credentials: true,
+    credentials: true, // important for cookies/auth
   }),
 );
 // app.use(

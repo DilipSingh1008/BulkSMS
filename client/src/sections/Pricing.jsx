@@ -16,11 +16,12 @@ export default function Pricing() {
   const [error, setError] = useState("");
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/pricing");
+        const res = await fetch(`${API_URL}/pricing`);
         const data = await res.json();
         const activePlans = data.data.filter(
           (p) => p.status === true && p.isDeleted === false,

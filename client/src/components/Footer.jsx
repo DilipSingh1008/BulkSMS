@@ -8,9 +8,10 @@ import {
   Linkedin,
   Github,
 } from "lucide-react";
+import logo from "../../public/logorm.png";
 
 export default function Footer() {
-  const links = ["Home", "Services", "Pricing", "Contact"];
+  const links = ["Home", "Services", "Pricing", "About"];
   // const socials = [
   //   { icon: <Instagram size={18} />, color: "hover:text-pink-500" },
   //   { icon: <Twitter size={18} />, color: "hover:text-sky-400" },
@@ -48,7 +49,7 @@ export default function Footer() {
               <div className="relative w-36 h-20 flex items-center justify-center group">
                 <div className="relative w-36 h-20 flex items-center justify-center group">
                   <img
-                    src="./logorm.png"
+                    src={logo}
                     alt="SwiftZap"
                     className="w-full h-full object-contain brightness-0 invert transition-transform duration-300 "
                   />

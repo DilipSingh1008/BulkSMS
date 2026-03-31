@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+const API_URL = import.meta.env.VITE_API_URL;
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api/",
+  baseUrl: `${API_URL}`,
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("token");
 
@@ -29,7 +29,7 @@ export const apiSlice = createApi({
     getItemById: builder.query({
       query: (arg) => {
         const endpoint =
-          typeof arg === "string" ? arg : (arg?.url || arg?.resource);
+          typeof arg === "string" ? arg : arg?.url || arg?.resource;
         return {
           url: `/${endpoint}`,
           method: "GET",
@@ -83,7 +83,6 @@ export const apiSlice = createApi({
         method: "POST",
       }),
     }),
-    
   }),
 });
 

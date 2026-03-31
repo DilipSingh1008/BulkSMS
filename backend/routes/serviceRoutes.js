@@ -22,7 +22,7 @@ const uploadFields = upload.fields([
 router.post("/", uploadFields, createService);
 router.get("/", getServices);
 router.get("/active", getActiveCategories);
-router.get("/getData", getServiceabById);
+router.get("/getData/:id", getServiceabById);
 
 router.put("/:id", uploadFields, updateService);
 router.get("/active-services", getActiveServices); // dropdown

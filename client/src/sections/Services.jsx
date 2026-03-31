@@ -7,12 +7,13 @@ export default function Services() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:5000/api/services");
+        const res = await fetch(`${API_URL}/services`);
         const data = await res.json();
         setServices(Array.isArray(data.data) ? data.data : []);
         setLoading(false);

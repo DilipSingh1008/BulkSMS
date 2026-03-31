@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import EnquiryModal from "./EnquiryModal";
+import logo from "../../public/logorm.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function Navbar() {
           <div className="flex items-center cursor-pointer">
             <div className="w-32 md:w-36 flex items-center justify-center">
               <img
-                src="./logorm.png"
+                src={logo}
                 alt="SwiftZap Icon"
                 className="w-full h-auto object-contain"
               />
